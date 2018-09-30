@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>paowob</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+    <meta charset="utf-8"/>
+    <!--script src="three.min.js"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      #screen {
+        width: 100vw;
+        height: 100vh;;
+        display: flex;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="screen"></div>
+    <script>
+
+      var LIMB_CONNECTION = "connection"
+      var LIMB_EXPANDER = "expander"
+      var LIMB_CONTRACTOR = "contractor"
+      var LIMB_TENTACLE = "tentacle"
+      var LIMB_STING = "sting"
+      var LIMB_CLAW = "claw"
+
+
+      var MINISNAIL = {
+        rotationOffset: Math.PI,
+        children: [
+          {
+            type: LIMB_EXPANDER,
+            length: .5,
+            children: [
+               {
+                type: LIMB_EXPANDER,
+                length: .5,
+                children: [
+                  {
+                   type: LIMB_EXPANDER,
+                   length: .5,
+                   children: [
+                     {
+                       type: LIMB_TENTACLE,
+                      length: .7,
+                      children: [
+                      ]
+                    },
+                     {
+                      type: LIMB_CLAW,
+                      length: .5,
+                      children: [
+                      ]
+                    },
+                     {
+                      type: LIMB_CLAW,
+                      length: .5,
+                      children: [
+                      ]
+                    },
+                   ]
+                 },
+                  {
+                   type: LIMB_TENTACLE,
+                   length: .7,
+                   children: [
+                   ]
+                 },
+                  {
+                   type: LIMB_TENTACLE,
+                   length: .7,
+                   children: [
+                   ]
+                 },
+                ]
+              },
+               {
+                type: LIMB_CLAW,
+                length: .5,
+                children: [
+                ]
+              },
+               {
+                type: LIMB_CLAW,
+                length: .5,
+                children: [
+                ]
+              },
+            ]
+          },
+          {
+            type: LIMB_EXPANDER,
+            length: .5,
+            children: [
+
+            ]
+          },
+          {
+            type: LIMB_EXPANDER,
+            length: .5,
+            children: [
+            ]
+          },
+
+        ]
+      }
+
+      var THREESTAR = {
+        rotationOffset: Math.PI,
+        children: [
+          {
+            type: LIMB_EXPANDER,
+            length: 1.75,
+            children: [
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_TENTACLE,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            type: LIMB_EXPANDER,
+            length: 1.75,
+            children: [
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_TENTACLE,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            type: LIMB_EXPANDER,
+            length: 1.75,
+            children: [
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_TENTACLE,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+              {
+                length: .8125,
+                children: [
+                  {
+                    type: LIMB_CLAW,
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                  {
+                    length: .3125,
+                  },
+                ]
+              },
+            ]
+          },
+        ]
+      }
+
+      var WORM = {
+        rotationOffset: Math.PI,
+        children: [
+          {
+            length: 1.,
+            children: [
+              {
+                length: 1,
+                children: [
+                  {
+                    length: 1,
+                    children: [
+                      {
+                        length: 1,
+                        children: [
+                          {
+                            length: 1,
+                            children: [
+                              {
+                                length: 1,
+                              },
+                              {
+                                length: .3
+                              },
+                              {
+                                length: .3
+                              },
+                            ],
+                          },
+                          {
+                            length: .4
+                          },
+                          {
+                            length: .4
+                          },
+                        ]
+                      },
+                      {
+                        length: .5
+                      },
+                      {
+                        length: .5
+                      },
+                    ]
+                  },
+                  {
+                    length: .4
+                  },
+                  {
+                    length: .4
+                  },
+                ]
+              },
+              {
+                length: .3
+              },
+              {
+                length: .3
+              },
+            ]
+          },
+          {
+            length: .2
+          },
+          {
+            length: 1,
+            type: LIMB_EXPANDER,
+            rotationOffset: 0,
+            children:[
+              {
+                length: .3,
+                type: LIMB_TENTACLE
+              },
+              {
+                length: .4,
+                type: LIMB_CLAW,
+              },
+              {
+                length: .4,
+                type: LIMB_CLAW,
+              },
+            ]
+          },
+          {
+            length: .4,
+            type: LIMB_TENTACLE,
+          },
+          {
+            length: 1,
+            type: LIMB_EXPANDER,
+            rotationOffset: 0,
+            children:[
+              {
+                length: .3,
+                type: LIMB_TENTACLE
+              },
+              {
+                length: .4,
+                type:LIMB_CLAW,
+              },
+              {
+                length: .4,
+                type: LIMB_CLAW,
+              },
+            ]
+          },
+          {
+            length: .2
+          },
+        ]
+      }
+
+      // UTIL
+
+      var TAU = 2 * Math.PI;
+      var mod = function ( a, n ) { return ( a % n + n ) % n; }
+
+      function getAngle(v1, v2) {
+        var angle = Math.atan2(v2.y - v1.y, v2.x - v1.x)
+        if ( angle < 0 ) angle += 2 * Math.PI
+        return angle
+      }
+
+      function getDistance(v1, v2) {
+        var tx = v1.x - v2.x
+        var ty = v1.y - v2.y
+        return Math.sqrt(tx*tx + ty*ty)
+        return angle
+      }
+
+      function getDeltaAngle( current, target ) {
+        var a = mod( ( current - target ), TAU );
+        var b = mod( ( target - current ), TAU );
+        return a < b ? -a : b;
+      }
+
+
+      // ACTION
+      function Action(power, world, being, limb) {
+        this.currentTime = this.startTime = Date.now()
+        this.power = power || 1
+        this.world = world
+        this.being = being
+        this.limb = limb
+        this.iteration = 0
+        this.complete = false
+        this.distance = this.limb.opts.size * 2.
+      }
+      Action.prototype.constructor = Action
+      Action.prototype.onUpdate = function() {
+        /* implemented by subclass */
+        this.complete = true
+      }
+      Action.prototype.update = function() {
+        if (this.complete) return
+        this.currentTime = Date.now()
+        this.onUpdate()
+        this.iteration++
+      }
+
+
+      function ClawAction() {
+        Action.apply(this, arguments)
+        this.duration = 200 + 600 * this.power
+        this.hits = []
+      }
+      ClawAction.prototype = Object.create(Action.prototype)
+      ClawAction.prototype.constructor = ClawAction
+      ClawAction.prototype.onUpdate = function() {
+        if (this.currentTime - this.startTime > this.duration) {
+          this.complete = true
+        } else {
+          var intersection = this.world.findNearby(this.being, this.limb, this.distance)
+          if (intersection) {
+            for(var i = 0; i< intersection.length; i++) {
+              var iLimb = intersection[i].limb
+              if(iLimb && this.hits.indexOf(iLimb) == -1) {
+                this.hits.push(iLimb)
+                iLimb.hit(this.being, this.power)
+              }
+            }
+          }
+        }
+      }
+
+
+      function ExpanderAction() {
+        Action.apply(this, arguments)
+        this.accelaration = .01 + .02 * this.power
+        this.velocity = .1 * this.power
+        this.maxLengthFactor =  1 + this.power * 4
+      }
+      ExpanderAction.prototype = Object.create(Action.prototype)
+      ExpanderAction.prototype.constructor = ExpanderAction
+      ExpanderAction.prototype.onUpdate = function() {
+        if (this.limb.lengthFactor > this.maxLengthFactor) {
+          this.complete = true
+        } else {
+          this.velocity += this.accelaration
+          this.limb.lengthFactor += this.velocity
+        }
+      }
+
+      function ContractorAction() {
+        Action.apply(this, arguments)
+        this.accelaration = .1 + .2 * this.power
+        this.velocity = .1 * this.power
+        this.minLengthFactor =  1 - this.power * (1-1/4)
+      }
+      ContractorAction.prototype = Object.create(Action.prototype)
+      ContractorAction.prototype.constructor = ContractorAction
+      ContractorAction.prototype.onUpdate = function() {
+        if (this.limb.lengthFactor < this.minLengthFactor) {
+          this.complete = true
+        } else {
+          this.velocity += this.accelaration
+          this.limb.lengthFactor -= this.velocity
+        }
+      }
+
+      function TentacleAction() {
+        Action.apply(this, arguments)
+        this.duration = 200 + 1000 * this.power
+        this.velocity = .01 + .1 * this.power
+        this.distance = this.limb.opts.size * 7.
+        this.target = null
+      }
+      TentacleAction.prototype = Object.create(Action.prototype)
+      TentacleAction.prototype.constructor = TentacleAction
+      TentacleAction.prototype.onUpdate = function() {
+        if (this.currentTime - this.startTime > this.duration) {
+          this.complete = true
+        } else {
+          var intersection = this.world.findNearby(this.being, this.limb, this.distance)
+          for (var i = 0; i< intersection.length; i++) {
+            var angle = getAngle(intersection[i].limb.position, this.limb.position)
+            intersection[i].limb.position.x += Math.cos(angle) * this.velocity * intersection[i].distance/this.distance
+            intersection[i].limb.position.y += Math.sin(angle) * this.velocity * intersection[i].distance/this.distance
+          }
+        }
+      }
+
+      // ACTION MAP
+
+      var ACTION = {}
+      ACTION[LIMB_EXPANDER] = ExpanderAction
+      ACTION[LIMB_CONTRACTOR] = ContractorAction
+      ACTION[LIMB_CLAW] = ClawAction
+      ACTION[LIMB_TENTACLE] = TentacleAction
+
+
+      // LIMB JOINT
+
+      function makeJointGeometry(length, tip, toe) {
+        var shape = new THREE.Shape();
+        shape.moveTo( 0, -tip/2 );
+        shape.lineTo( length, -toe/8)
+        shape.lineTo( length, toe/8)
+        shape.lineTo( 0, tip/2)
+        return new THREE.ShapeBufferGeometry( shape );
+      }
+
+      function makeStarGeometry(spikes, outer, inner) {
+        var shape = new THREE.Shape();
+        var stops = spikes*2
+        shape.moveTo( outer, 0 );
+        var rad = TAU / stops
+        for (var i=1; i<stops; i++) {
+          shape.lineTo(
+            Math.cos(i*rad) * ((i%2 == 0) ? outer : inner),
+            Math.sin(i*rad) * ((i%2 == 0) ? outer : inner)
+          )
+        }
+        return new THREE.ShapeBufferGeometry( shape );
+      }
+
+      function makeRingGeometry(outer, inner, vetices) {
+        var shape = new THREE.Shape()
+        var hole = new THREE.Path()
+
+        shape.moveTo( outer, 0 )
+        hole.moveTo( inner, 0 )
+        var rad = TAU / vetices
+        for (var i=1; i<vetices; i++) {
+          shape.lineTo(
+            Math.cos(i*rad) * outer,
+            Math.sin(i*rad) * outer
+          )
+          hole.lineTo(
+            Math.cos(i*rad) * inner,
+            Math.sin(i*rad) * inner
+          )
+        }
+        shape.holes.push(hole)
+        return new THREE.ShapeBufferGeometry( shape )
+      }
+
+      var JOINT_GEOMETRY = makeJointGeometry(1, .7, .5 )
+
+      // LIMB
+      var LIMB_DEFAULTS = {
+        length: 1,
+        maxStretch: .5,
+        springTension: 1/32,
+        maxAngularStretch: TAU * .2,
+        angularSpringTension: 1/32,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        rotationOffset: 0,
+        color: 0xFFFFFF,
+        size: .2,
+        type: LIMB_CONNECTION,
+        minOpacity: .15,
+        maxOpacity: .6
+
+      }
+      var LIMB_DEFAULT_GEOMETRY = new THREE.CircleBufferGeometry(.5, 12 )
+      var LIMB_GEOMETRY = {}
+      LIMB_GEOMETRY[LIMB_CLAW] = makeStarGeometry(3, 1.2, .3 )
+      LIMB_GEOMETRY[LIMB_TENTACLE] = makeRingGeometry(.8, .4, 12 )
+
+      var Limb = function(being, parent, opts) {
+        this.being = being
+        this.parent = parent
+        this.opts = Object.assign({}, LIMB_DEFAULTS, opts)
+        this.position  = new THREE.Vector3(opts.x || 0,  opts.y || 0, 0)
+        this.rotation = this.opts.rotation
+        this.children = []
+        this.action = null
+        this.lengthFactor = 1.
+        this.energy = 1.
+        this.active = true
+        this.opacity = this.opts.maxOpacity
+        this.color = this.opts.color
+        if(this.parent !== this) {
+          var lMaterial = new THREE.MeshBasicMaterial({
+            color: this.color,
+            transparent: true,
+            opacity: .8,
+          })
+          this.line = new THREE.Mesh( JOINT_GEOMETRY, lMaterial )
+          this.line.scale.y = this.parent.opts.size
+          this.line.userData.limb = this
+          this.being.root.add(this.line)
+        }
+        var mMaterial = new THREE.MeshBasicMaterial( {
+           color: this.color,
+           transparent: true,
+           opacity: .8,
+        } )
+        var geom = LIMB_DEFAULT_GEOMETRY
+        if (LIMB_GEOMETRY[this.opts.type]) {
+          geom = LIMB_GEOMETRY[this.opts.type]
+        }
+        this.mesh = new THREE.Mesh( geom, mMaterial )
+        this.mesh.userData.limb = this
+        this.mesh.userData.being = this
+        this.mesh.scale.x = this.mesh.scale.y = this.opts.size
+        this.being.root.add(this.mesh)
+
+        if (opts.children) {
+          var i = 0;
+          for(i; i<opts.children.length; i++){
+            var t = (Math.PI*2)/(opts.children.length)
+            var l = new Limb(
+              this.being,
+              this,
+              Object.assign(
+                {},
+                this.opts.children[i],
+                {
+                  rotation: this.opts.children[i].rotation || i*t + (this.opts.rotationOffset || 0)
+                }
+              )
+            )
+            this.children.push(l)
+          }
+        }
+      }
+      Limb.prototype.constructor = Limb
+      Limb.prototype.update = function() {
+
+        if (this.parent !== this) {
+          var k = 0;
+          if (this.action) {
+            if (this.color != 0xFF0000) {
+              this.color = 0xFF0000
+              this.mesh.material.color.setHex(this.color)
+            }
+            this.action.update()
+            if (this.action.complete) this.action = null
+          } else if (this.color != 0xFFFFFF) {
+            this.color = 0xFFFFFF
+            this.mesh.material.color.setHex(this.color)
+          }
+
+          var length = this.opts.length * this.lengthFactor
+          var stretchLen = length * this.opts.maxStretch
+          var dist = this.parent.position.distanceTo(this.position)
+          var minD = Math.min(length - stretchLen, this.opts.length-this.opts.length * this.opts.maxStretch)
+          var maxD = Math.max(length + stretchLen, this.opts.length-this.opts.length * this.opts.maxStretch)
+          var rd = getDeltaAngle(this.parent.rotation+this.opts.rotation , this.rotation)
+
+          if (Math.abs(rd) > this.opts.maxAngularStretch) {
+            this.rotation = this.parent.rotation + this.opts.rotation + this.opts.maxAngularStretch * (rd<0?-1:1)
+          }
+          if(this.active && rd!=0){
+            var speed = (Math.abs(rd)/this.opts.maxAngularStretch) * this.opts.maxAngularStretch * this.opts.angularSpringTension
+            this.rotation += rd<0?speed:-speed
+          }
+
+          if (dist < minD) {
+            dist = minD
+          } else if (dist > maxD) {
+            dist = maxD
+          }
+
+          if (this.active) {
+            dist -= ((dist - length) / stretchLen) * stretchLen * this.opts.springTension
+          }
+
+          this.position.x = Math.cos(this.rotation) * (dist) + this.parent.position.x
+          this.position.y = Math.sin(this.rotation) * (dist) + this.parent.position.y
+          if (this.line) {
+            this.line.material.opacity = this.opacity
+            this.line.position.x = this.parent.position.x
+            this.line.position.y = this.parent.position.y
+            this.line.scale.x = dist
+            this.line.rotation.z = this.rotation
+          }
+        }
+
+        if (this.active) {
+          // shrink length factor
+          this.lengthFactor += (1-this.lengthFactor)/10
+        }
+
+
+        this.mesh.material.opacity = this.opacity
+
+        this.mesh.rotation.z = this.rotation
+        this.mesh.position.x = this.position.x
+        this.mesh.position.y = this.position.y
+        if (this.children) {
+          var i = 0;
+          for(i; i<this.children.length; i++){
+            this.children[i].update()
+          }
+        }
+      }
+      Limb.prototype.hit = function(being, power) {
+        this.energy -= power
+        this.energy = Math.max(0, this.energy)
+        this.opacity = this.opts.minOpacity + this.energy * (this.opts.maxOpacity-this.opts.minOpacity)
+        this.being.attackedBy(being)
+        if (this.energy == 0) this.being.checkForDeath()
+      }
+      Limb.prototype.deactivate = function() {
+        this.active = false
+        if (this.children) {
+          var i = 0;
+          for(i; i<this.children.length; i++){
+            this.children[i].deactivate()
+          }
+        }
+      }
+      Limb.prototype.getEnergy = function() {
+        var hp = this.energy
+        if (this.children) {
+          var i = 0;
+          for(i; i<this.children.length; i++){
+            hp += this.children[i].getEnergy()
+          }
+        }
+        return hp
+      }
+      Limb.prototype.fire = function(power, world, being) {
+        if (ACTION[this.opts.type]) {
+          this.action = new ACTION[this.opts.type](power, world, being, this)
+        }
+        if (this.children) {
+          var i = 0;
+          for(i; i<this.children.length; i++){
+            this.children[i].fire(power, world, being)
+          }
+        }
+      }
+
+      // BEING
+
+      var BEING_DEFAULTS = {
+        accelaration: .01,
+        maxVelocity: .1,
+        velocityDampingFactor: .5,
+        angularAccelaration: TAU / 720, // .5 deg
+        maxAngularVelocity: TAU / 60, // 6 deg
+        angularVelocityDampingFactor: .5,
+        reverseAccelarationFactor: .1,
+        reverseVelocityFactor: .7,
+        powerUpSpeed: .01,
+        powerReduce: .01,
+        energyRecovery: .01,
+        maxEnergy: 1,
+
+      }
+      var Being = function(controller, opts) {
+        this.uid = Math.random()
+        this.controller = controller
+        this.opts = Object.assign({}, BEING_DEFAULTS, opts)
+        this.velocity = 0
+        this.angularVelocity = 0
+        this.turn = 0
+        this.move = 0
+        this.dead = false
+        //this.energy = 1. // available energy
+        this.power = 0 // charged power
+        this.trigger = 0 // trigger fire
+        this.powerUp = 0
+        this.attackers = {}
+        this.lastAttack = 0
+        this.root = new THREE.Object3D()
+        Limb.call(this, this, this, this.opts)
+
+        var mMaterial = new THREE.MeshBasicMaterial( { color: this.opts.color, opacity:.3, transparent:true} )
+        this.halo = new THREE.Mesh( LIMB_DEFAULT_GEOMETRY, mMaterial )
+        this.halo.scale.x = this.halo.scale.y = 1
+        this.root.add(this.halo)
+
+      }
+      Being.prototype = Object.create(Limb.prototype)
+      Being.prototype.constructor = Being
+      Being.prototype.attackedBy = function(being, power) {
+        if (!this.attackers[being.uid]) this.attackers[being.uid] = {being, power}
+        else this.attackers[being.uid].power += power
+        this.lastAttack = Date.now()
+      }
+      Being.prototype.checkForDeath = function() {
+        if (!this.getEnergy()) this.die()
+      }
+      Being.prototype.die = function() {
+        this.move = 0
+        this.turn = 0
+        this.dead = true
+        this.deactivate()
+      }
+      Being.prototype.update = function(world) {
+
+        if (this.move == 0) {
+          this.velocity *= this.opts.velocityDampingFactor
+        }
+
+        if (this.turn == 0) {
+          this.angularVelocity *= this.opts.angularVelocityDampingFactor
+        }
+        if (this.active){
+          if(this.controller) this.controller.update(world, this)
+          //this.energy += this.opts.energyRecovery
+          if (this.power >=1 ) this.trigger = 1
+          if (this.trigger) {
+            this.fire(this.trigger * this.power, world, this)
+            this.power -= this.trigger * this.power
+            this.trigger = 0
+          } else if (this.powerUp) {
+            this.power += this.opts.powerUpSpeed * this.powerUp
+          } else {
+            this.power -= this.opts.powerReduce
+          }
+
+          this.velocity += this.move * (this.move>0 ? this.opts.accelaration : this.opts.accelaration * this.opts.reverseAccelarationFactor)
+          this.velocity = Math.max(-this.opts.maxVelocity  * this.opts.reverseVelocityFactor, Math.min(this.opts.maxVelocity , this.velocity))
+
+          this.angularVelocity +=  this.turn * this.opts.angularAccelaration
+          this.angularVelocity = Math.max(-this.opts.maxAngularVelocity, Math.min(this.opts.maxAngularVelocity, this.angularVelocity))
+        } else {
+          this.power -= this.opts.powerReduce
+        }
+
+        // Power Limiter
+        this.power = Math.max(0, Math.min(1, this.power))
+
+        this.rotation += this.angularVelocity
+
+        this.position.x += Math.cos(this.rotation) * (this.velocity)
+        this.position.y += Math.sin(this.rotation) * (this.velocity)
+
+        if (this.dead) {
+          this.halo.material.opacity = .1
+        } else {
+          this.halo.material.opacity = .2 + Math.pow(this.power/2, 2)
+        }
+        this.halo.position.x = this.position.x
+        this.halo.position.y = this.position.y
+        this.halo.scale.x = this.halo.scale.y = .5 + Math.pow(this.power*.7, 3)
+
+
+
+        Limb.prototype.update.call(this)
+      }
+
+      // KEYBOARD COTROLLER
+      var KEYBOARD_CONTROLLER_DEFAULTS = {
+
+      }
+      var KeyboardController = function(opts) {
+        Object.call(this)
+        this.opts = Object.assign({}, KEYBOARD_CONTROLLER_DEFAULTS, opts)
+        this.keys = {}
+        window.addEventListener("keydown", (e) => {
+          this.keys[e.key] = true
+        })
+        window.addEventListener("keyup", (e) => {
+          this.keys[e.key] = false
+        })
+      }
+      KeyboardController.prototype.constructor = KeyboardController
+      KeyboardController.prototype.update = function(world, ctx) {
+        if (!ctx) return
+        ctx.move = 0
+        ctx.turn = 0
+        if (this.keys["ArrowUp"] || this.keys["w"]) {
+          ctx.move +=1
+        }
+        if (this.keys["ArrowDown"] || this.keys["s"]) {
+          ctx.move -=1
+        }
+        if (this.keys["ArrowLeft"] || this.keys["a"]) {
+          ctx.turn +=1
+        }
+        if (this.keys["ArrowRight"] || this.keys["d"]) {
+          ctx.turn -=1
+        }
+        if (this.keys[" "]) {
+          ctx.trigger = 0
+          ctx.powerUp = 1
+        } else if (!this.keys[" "] && ctx.powerUp) {
+          ctx.powerUp = 0
+          ctx.trigger = 1
+        }
+      }
+
+      // BOID COTROLLER
+      var BOID_MODE_IDLE = "idle"
+      var BOID_MODE_SEARCH = 2
+      var BOID_MODE_TRACE = 3
+      var BOID_CONTROLLER_DEFAULTS = {
+        mode: BOID_MODE_IDLE,
+        aggressive: false
+
+      }
+      var BoidController = function(opts) {
+        Object.call(this)
+        this.opts = Object.assign({}, BOID_CONTROLLER_DEFAULTS, opts)
+        this.target = null
+      }
+      BoidController.prototype.constructor = BoidController
+      BoidController.prototype.randomPosition = function (world) {
+        this.target = world.randomPosition()
+      }
+      BoidController.prototype.randomTarget = function (world) {
+        this.target = world.randomTarget(being).position
+      }
+      BoidController.prototype.pickAttacker = function(ctx) {
+        var selected = null
+        for (var k in ctx.attackers) {
+          if (!selected || ctx.attackers[k].power > selected.power) {
+            if (ctx.attackers[k].being.dead) delete ctx.attackers[k]
+            else selected = ctx.attackers[k]
+
+          }
+        }
+        if (selected) this.target = selected.being.position
+        else this.target = null
+      }
+      BoidController.prototype.update = function(world, ctx) {
+        if (!ctx) return
+        var aggressive = false
+        if (ctx.lastAttack > Date.now() - 10000) {
+          this.pickAttacker(ctx)
+          aggressive = true
+        } else {
+          if (!this.target || Math.random() > .99) {
+            if (Math.random()>.5) this.randomPosition(world)
+            else this.randomTarget(world)
+          }
+        }
+        if (!this.target) this.randomPosition(world)
+        var dist = getDistance(ctx.position, this.target)
+        var angle =  getAngle(ctx.position, this.target)
+        var dAngle = getDeltaAngle(ctx.rotation, angle)
+        if (dAngle > 0) {
+          ctx.turn = 1
+        } else if (dAngle < 0) {
+          ctx.turn = -1
+        } else {
+          ctx.turn = 0
+        }
+        if (dAngle > Math.PI/2 || dAngle < -Math.PI/2) {
+          ctx.move = -1
+        }  else {
+          ctx.move = 1
+        }
+        if (dist < 5) {
+          ctx.move *= dist/5
+          if(aggressive) ctx.powerUp = 1
+        }
+        if (aggressive && ctx.power > .5 && dist<2) {
+          ctx.trigger = 1
+        }
+
+        if (Math.random()>.99) ctx.move *= -1
+        if (Math.random()>.99) ctx.turn *= -1
+
+      }
+
+
+      // BOKEH
+      function randomBokehColor(max) {
+        var r = Math.round(Math.random() * max) * 0x10000
+        var g = Math.round(Math.random() * max) * 0x100
+        var b = Math.round(Math.random() * max)
+        return r + g + b
+
+      }
+      var BOKEH_DEFAULTS = {
+        width: 512,
+        height: 512,
+        bokehCount: 512,
+        maxSize: 5,
+        minSize: .1,
+        opacity: 1,
+        maxColor: 0xFF
+      }
+      var BOKEH_GEOMETRY = new THREE.CircleBufferGeometry(1, 36 )
+      var BokehLayer = function(opts) {
+        THREE.Object3D.call(this)
+        this.opts = Object.assign({}, BOKEH_DEFAULTS, opts)
+        for(var i = 0; i < this.opts.bokehCount; i++) {
+          var mMaterial = new THREE.MeshBasicMaterial( { color: randomBokehColor(this.opts.maxColor) })
+          mMaterial.transparent = (this.opts.opacity==1)?false:true
+          mMaterial.opacity = this.opts.opacity
+          var mesh = new THREE.Mesh( BOKEH_GEOMETRY, mMaterial )
+          mesh.scale.x = mesh.scale.y = this.opts.minSize + Math.random() * (this.opts.maxSize - this.opts.minSize)
+          mesh.position.x = (Math.random() * 2 - 1) * this.opts.width
+          mesh.position.y = (Math.random() * 2 - 1) * this.opts.height
+          this.add(mesh)
+        }
+      }
+      BokehLayer.prototype = Object.create(THREE.Object3D.prototype)
+      BokehLayer.prototype.constructor = BokehLayer
+
+
+      // WORLD
+      var WORLD_DEFAULTS = {
+        bokehLayers: 3,
+        width: 512,
+        height: 512,
+        bokehCount: 512,
+        viewSize: 20,
+        maxCameraDistFactor: .8,
+        cameraFollowFactor: .01
+      }
+      var World = function(opts) {
+        THREE.Scene.call(this)
+        this.opts = Object.assign({}, WORLD_DEFAULTS, opts)
+        this.beings = []
+        this.cameraFollow
+        this.bokehGroup = new THREE.Group()
+        this.beingGroup = new THREE.Group()
+        this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 100)
+    		this.camera.position.z = 50;
+
+
+        for (var i = 0; i<3; i++) {
+          var bokehLayer = new BokehLayer(Object.assign({}, opts, {maxColor: 0x80, opacity: 1/(i+2)}))
+          bokehLayer.position.z = 30-i*10
+          bokehLayer.scale.x = 1+i
+          bokehLayer.scale.y = 1+i
+          this.bokehGroup.add(bokehLayer)
+        }
+        this.add(this.bokehGroup)
+        this.add(this.beingGroup)
+
+      }
+      World.prototype = Object.create(THREE.Scene.prototype)
+      World.prototype.constructor = World
+      World.prototype.update = function() {
+        var maxCameraDist = this.opts.viewSize*this.opts.maxCameraDistFactor
+        if (this.cameraFollow) {
+          var v1 =  new THREE.Vector2(this.camera.position.x, this.camera.position.y)
+          var v2 =  new THREE.Vector2(this.cameraFollow.position.x, this.cameraFollow.position.y)
+          var dist = getDistance(v1, v2)
+          var angle =  getAngle(v1, v2)
+          dist *= this.opts.cameraFollowFactor
+          if (dist > maxCameraDist) {
+            dist = dist - maxCameraDist
+
+          }
+          this.camera.position.x += Math.cos(angle) * dist
+          this.camera.position.y += Math.sin(angle) * dist
+        }
+
+        for(var i = 0; i < this.bokehGroup.children.length; i++) {
+          this.bokehGroup.children[i].position.x = this.camera.position.x * -(1+i)
+          this.bokehGroup.children[i].position.y = this.camera.position.y * -(1+i)
+        }
+
+        for(var i = 0; i < this.beings.length; i++) {
+          this.beings[i].update(this)
+        }
+      }
+      World.prototype.randomPosition = function(vec) {
+        vec = vec || new THREE.Vector2()
+        vec.x = (Math.random() * 2 - 1) * this.opts.width/2
+        vec.y = (Math.random() * 2 - 1) * this.opts.height/2
+        return vec
+      }
+      World.prototype.randomTarget = function(being) {
+        var pickable = []
+        for(var j = 0; j < this.beings.length; j++) {
+          if (this.beings[j] !== being && !this.beings[j].dead) {
+            pickable.push(this.beings[j])
+          }
+        }
+        if (!pickable.length) return
+        return pickable[(pickable.length*Math.random())|0]
+      }
+      World.prototype.findNearby = function(being, limb, distance) {
+        var intersects = []
+        for(var j = 0; j < this.beings.length; j++) {
+          if (
+            being !== this.beings[j]
+          ){
+            target = this.beings[j]
+            if(!target) return null
+            for (var i = 0; i < target.root.children.length; i++) {
+              var dist = limb.position.distanceTo(target.root.children[i].position)
+              if (
+                dist < distance &&
+                target.root.children[i].userData.limb
+              ) {
+                intersects.push({
+                  distance: dist,
+                  mesh: target.root.children[i],
+                  being: target,
+                  limb: target.root.children[i].userData.limb
+                })
+              }
+            }
+          }
+        }
+        intersects.sort(function(a,b) {
+          return a.distance - b.distance
+        })
+        return intersects
+      }
+      World.prototype.spawn = function(controller, opts) {
+        opts = opts || {}
+        var rand = this.randomPosition()
+        opts.x = opts.hasOwnProperty("x") ? opts.x : rand.x
+        opts.y = opts.hasOwnProperty("y") ? opts.y : rand.y
+        var instance = new Being(controller, opts)
+        this.beings.push(instance)
+        instance.root.position.z = 40
+        this.beingGroup.add(instance.root)
+        return instance
+      }
+      World.prototype.setSize = function(width, height) {
+        this.camera.left = -width/2
+        this.camera.right = width/2
+        this.camera.top = height/2
+        this.camera.bottom = -height/2
+        this.camera.updateProjectionMatrix()
+      }
+
+
+
+
+      function resize() {
+        width = containerElement.offsetWidth
+        height = containerElement.offsetHeight
+		    renderer.setSize( width, height);
+        aspect = width/height
+        sceneWidth = viewSize*aspect //window.innerWidth
+        sceneHeight = viewSize // window.innerHeight
+        world.setSize(sceneWidth, sceneHeight)
+      }
+
+
+
+      var viewSize = 20
+
+      var aspect = 1
+      var width = 1
+      var height =1
+      var sceneWidth = viewSize*aspect //window.innerWidth
+      var sceneHeight = viewSize // window.innerHeight
+  		var renderer = new THREE.WebGLRenderer({antialias: true, sortObjects: false})
+
+      var containerElement = document.querySelector('#screen')
+  		containerElement.appendChild( renderer.domElement );
+
+      var world = new World({width:128, height:128})
+      world.position.z = 0
+
+      resize()
+      window.addEventListener("resize", resize)
+
+      var being = world.spawn(new KeyboardController(), Object.assign({}, THREESTAR, {x: 0, y:0}) )
+      world.spawn(new BoidController(), WORM )
+      world.spawn(new BoidController(), THREESTAR )
+      world.spawn(new BoidController(), WORM )
+      world.spawn(new BoidController(), THREESTAR )
+      world.spawn(new BoidController(), WORM )
+      world.spawn(new BoidController(), MINISNAIL )
+      world.spawn(new BoidController(), WORM )
+      world.spawn(new BoidController(), MINISNAIL )
+      world.spawn(new BoidController(), WORM )
+      world.spawn(new BoidController(), MINISNAIL )
+      world.spawn(new BoidController(), WORM )
+      world.cameraFollow = being
+
+			var animate = function () {
+        requestAnimationFrame( animate )
+        world.update()
+				renderer.render( world, world.camera )
+			}
+
+			animate();
+    </script>
+  </body>
+</html>
